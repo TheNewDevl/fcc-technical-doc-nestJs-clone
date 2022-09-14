@@ -311,9 +311,8 @@ nav {
     width: 250px;
     top: 0;
     left: 0;
-    height: 100%;
+    min-height: 100%;
     padding: 125px 17px 40px 24px;
-    overflow: scroll;
 }
 
 #navbar header h1 {
