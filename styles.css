@@ -34,6 +34,11 @@ ol, ul {
     margin-left: 250px;
 }
 
+html {
+    scroll-padding-top: 120px;
+    scroll-behavior: smooth;
+}
+
 /* HEADER */
 
 .center {
