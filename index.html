@@ -2,15 +2,389 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content="freeCodeCamp Technical documentation page challenge." >
+  <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
+  <meta content="ie=edge" http-equiv="X-UA-Compatible">
+  <meta content="freeCodeCamp Technical documentation page challenge." name="description">
   <title>Technical Docs</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link href="styles.css" rel="stylesheet">
 </head>
 <body>
 
+<nav id="navbar">
+  <header><h1>NestJS Documentation</h1></header>
+  <a class="nav-link" href="#Introduction">Introduction</a>
+  <a class="nav-link" href="#Controllers">Controllers</a>
+  <a class="nav-link" href="#Providers">Providers</a>
+
+</nav>
+
+<main id="main-doc">
+  <section class="main-section" id="Introduction">
+    <header>
+      Introduction
+    </header>
+    <p>Nest (NestJS) is a framework for building efficient, scalable <a class="external-link"
+                                                                        href="https://nodejs.org/"
+                                                                        rel="nofollow"
+                                                                        target="_blank">Node.js </a>
+       server-side applications. It uses progressive JavaScript, is built with and fully supports <a
+              class="external-link" href="https://www.typescriptlang.org/" rel="nofollow"
+              target="_blank">Typescript </a> (yet still enables developers to code in pure
+       JavaScript) and combines elements of OOP (Object-Oriented Programming), FP (Functional
+       Programming), and FRP (Functional Reactive Programming).</p>
+    <p>
+      Under the hood, Nest makes use of robust HTTP Server frameworks like <a class="external-link"
+                                                                              href="https://expressjs.com/"
+                                                                              rel="nofollow"
+                                                                              target="_blank">Express </a>
+      (the default) and optionally can be configured to use <a class="external-link"
+                                                               href="https://github.com/fastify/fastify/"
+                                                               rel="nofollow" target="_blank">Fastify </a>
+      as well! </p>
+    <p>
+      Nest provides a level of abstraction above these common Node.js frameworks (Express/Fastify),
+      but also exposes their APIs directly to the developer. This gives developers the freedom to
+      use the myriad of third-party modules which are available for the underlying platform. </p>
+
+    <ol>
+      <li>
+        <header>
+          Philosophy
+        </header>
+        <p>In recent years, thanks to Node.js, JavaScript has become the “lingua franca” of the web
+           for both front and backend applications. This has given rise to awesome projects like <a
+                  class="external-link" href="https://angular.io/" rel="nofollow" target="_blank">Angular</a>,
+          <a class="external-link" href="https://github.com/facebook/react" rel="nofollow"
+             target="_blank">React</a> and <a class="external-link"
+                                              href="https://github.com/vuejs/vue" rel="nofollow"
+                                              target="_blank">Vue</a>, which improve developer
+           productivity and enable the creation of fast, testable, and extensible frontend
+           applications. However, while plenty of superb libraries, helpers, and tools exist for
+           Node (and server-side JavaScript), none of them effectively solve the main problem of
+           -<strong>Architecture</strong>.
+
+        </p>
+        <p> Nest provides an out-of-the-box application architecture which allows developers and
+            teams to create highly testable, scalable, loosely coupled, and easily maintainable
+            applications. The architecture is heavily inspired by Angular. </p>
+      </li>
+
+      <li>
+        <header>
+          Installation
+        </header>
+
+        <p>To get started, you can either scaffold the project with the <a class="external-link"
+                                                                           href="#">Nest CLI</a>, or
+           clone a starter project (both will produce the same outcome). </p>
+        <p> To scaffold the project with the Nest CLI, run the following commands. This will create
+            a new project directory, and populate the directory with the initial core Nest files and
+            supporting modules, creating a conventional base structure for your project. Creating a
+            new project with the Nest CLI is recommended for first-time users. We'll continue with
+            this approach in <a class="external-link" href="#">First
+                                                               Steps</a>.
+        </p>
+
+        <pre class="terminal"><code class="terminal">
+$ npm i -g @nestjs/cli
+$ nest new project-name</code></pre>
+
+        <blockquote class="hint">
+          <h3>HINT</h3>
+          <p>To create a new project with TypeScript's <a
+                  href="https://www.typescriptlang.org/tsconfig#strict" rel="nofollow"
+                  target="_blank">strict</a> mode enabled, pass the <code>--strict</code> flag to
+             the <code>nest new</code> command.</p>
+        </blockquote>
+      </li>
+    </ol>
+  </section>
+
+  <section class="main-section" id="Controllers">
+    <header>
+      Controllers
+    </header>
+    <p>
+      Controllers are responsible for handling incoming <strong>requests</strong> and returning
+      <strong>responses</strong> to the client. </p>
+    <div class="img-container">
+      <img alt="Controllers illustration" src="https://docs.nestjs.com/assets/Controllers_1.png">
+    </div>
+
+    <p>A controller's purpose is to receive specific requests for the application. The <strong>routing</strong>
+       mechanism controls which controller receives which requests. Frequently, each controller has
+       more than one route, and different routes can perform different actions. </p>
+    <p>
+      In order to create a basic controller, we use classes and <strong>decorators</strong>.
+      Decorators associate classes with required metadata and enable Nest to create a routing map
+      (tie requests to the corresponding controllers).</p>
+
+    <blockquote class="hint">
+      <h3>HINT</h3>
+      <p>For quickly creating a CRUD controller with the <a
+              href="https://docs.nestjs.com/techniques/validation" rel="nofollow" target="_blank">validation</a>
+         built-in, you may use the CLI's <a
+                href="https://docs.nestjs.com/recipes/crud-generator#crud-generator" rel="nofollow"
+                target="_blank">CRUD generator</a> <code>nest g resource [name].</code>
+      </p>
+    </blockquote>
+
+    <ol>
+      <li>
+        <header>
+          Routing
+        </header>
+
+        <p>In the following example we'll use the <code>@Controller()</code>decorator, which is
+          <strong>required</strong> to define a basic controller. We'll specify an optional route
+           path prefix of <code>cats</code>. Using a path prefix in a <code>@Controller()</code>
+           decorator allows us to easily group a set of related routes, and minimize repetitive
+           code. For example, we may choose to group a set of routes that manage interactions with a
+           customer entity under the route <code>/customers.</code> In that case, we could specify
+           the path prefix <code>customers</code> in the <code>@Controller()</code> decorator so
+           that we don't have to repeat that portion of the path for each route in the file. </p>
+
+        <span class="filename">cats.controller.js <span>TS</span></span>
+        <pre class="typescript">
+          <code class="typescript">
+<span class="keyword">import</span> <span class="punctuation">{</span> Controller<span
+        class="punctuation">,</span> Get <span class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'@nestjs/common'</span> <span class="punctuation">;</span>
+
+<span class="decorator"><span class="at operator">@</span><span
+        class="function">Controller</span></span><span class="punctuation">(</span> <span
+        class="string">'cats'</span> <span class="punctuation">)</span>
+<span class="keyword">export</span> <span class="keyword">class</span> <span class="class-name">CatsController</span> <span
+        class="punctuation">{</span>
+  <span class="decorator"><span
+          class="function">@Get</span></span><span class="punctuation">(</span> <span
+        class="punctuation">)</span>
+  <span class="function">findAll</span><span class="punctuation">(</span> <span
+        class="punctuation">)</span> <span class="punctuation">{</span>
+    <span class="keyword">return</span> <span
+        class="string">'This action returns all cats'</span> <span class="punctuation">;</span>
+  <span class="punctuation">}</span>
+<span class="punctuation">}</span></code></pre>
+
+        <blockquote class="hint">
+          <h3>HINT</h3>
+          <p>To create a controller using the CLI, simply execute the <code>$ nest g controller
+                                                                            cats</code> command.
+          </p>
+        </blockquote>
+        <p>The <code>@Get()</code> HTTP request method decorator before the <code>findAll()</code>
+           method tells Nest to create a handler for a specific endpoint for HTTP requests. The
+           endpoint corresponds to the HTTP request method (GET in this case) and the route path.
+           What is the route path? The route path for a handler is determined by concatenating the
+           (optional) prefix declared for the controller, and any path specified in the method's
+           decorator. Since we've declared a prefix for every route ( <code>cats</code> ), and
+           haven't added any path information in the decorator, Nest will map <code>GET /cats</code>
+           requests to this handler. As mentioned, the path includes both the optional controller
+           path prefix and any path string declared in the request method decorator. For example, a
+           path prefix of customers combined with the decorator <code>@Get('profile')</code> would
+           produce a route mapping for requests like <code>GET /customers/profile.</code></p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="main-section" id="Providers">
+    <header>
+      Providers
+    </header>
+
+    <p>Providers are a fundamental concept in Nest. Many of the basic Nest classes may be treated as
+       a provider – services, repositories, factories, helpers, and so on. The main idea of a
+       provider is that it can be <strong>injected</strong> as a dependency; this means objects can
+       create various
+       relationships with each other, and the function of "wiring up" instances of objects can
+       largely be delegated to the Nest runtime system.</p>
+    <div class="img-container">
+      <img alt="Provider graph" src="https://docs.nestjs.com/assets/Components_1.png">
+    </div>
+    <p>
+      In the previous chapter, we built a simple <code>CatsController</code>. Controllers should
+      handle HTTP
+      requests and delegate more complex tasks to <strong>providers</strong>. Providers are plain
+      JavaScript classes
+      that are declared as <strong>providers</strong> in a <a class="external-link"
+                                                              href="#Modules">module</a>.
+    </p>
+
+    <blockquote class="hint">
+      <h3>HINT</h3>
+      <p>Since Nest enables the possibility to design and organize dependencies in a more OO way, we
+         strongly recommend following the <a
+                href="https://en.wikipedia.org/wiki/SOLID" rel="nofollow"
+                target="_blank">SOLID</a> principles.</p>
+    </blockquote>
+
+    <ol>
+      <li>
+        <header>
+          Services
+        </header>
+
+        <p>Let's start by creating a simple <code>CatsService</code>. This service will be
+           responsible for data
+           storage and retrieval, and is designed to be used by the <code>CatsController</code>, so
+           it's a good
+           candidate to be defined as a provider.</p>
+
+        <span class="filename">cats.service.ts <span>TS</span></span>
+        <pre class="typescript">
+          <code class="typescript">
+<span class="keyword">import</span> <span class="punctuation">{</span> Injectable <span
+        class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'@nestjs/common'</span> <span class="punctuation">;</span>
+
+<span class="decorator"><span class="at operator">@</span><span
+        class="function">Injectable</span></span><span class="punctuation">(</span> <span
+        class="punctuation">)</span>
+<span class="keyword">export</span> <span class="keyword">class</span> <span class="class-name">CatsService</span> <span
+        class="punctuation">{</span>
+  <span class="decorator"><span
+          class="function">constructor</span></span> <span class="punctuation"></span><span
+        class="punctuation">(</span> <span
+        class="punctuation">)</span> <span
+        class="punctuation">{</span>
+    <span class="keyword">this</span><span class="punctuation">.</span>cats <span
+        class="operator">=</span> <span class="punctuation">[</span> <span
+        class="punctuation">]</span><span class="punctuation">;</span>
+  <span class="punctuation">}</span>
+
+  <span class="function">create</span><span class="punctuation">(</span>cat<span
+        class="punctuation">)</span><span class="punctuation">{</span>
+    <span class="keyword">this</span><span class="punctuation">.</span>cats<span
+        class="punctuation">.</span><span class="function">push</span><span
+        class="punctuation">(</span>cat<span class="punctuation">)</span><span
+        class="punctuation">;</span>
+  <span class="punctuation">}</span>
+
+  <span class="function">findAll</span><span class="punctuation">(</span><span
+        class="punctuation">)</span><span class="punctuation">{</span>
+    <span class="keyword">return</span> <span class="keyword">this</span><span
+        class="punctuation">.</span>cats<span class="punctuation">;</span>
+  <span class="punctuation">}</span>
+<span class="punctuation">}</span></code></pre>
+
+        <blockquote class="hint">
+          <h3>HINT</h3>
+          <p>To create a service using the CLI, simply execute the
+            <code>$ nest g service cats</code>
+             command.</p>
+        </blockquote>
+
+        <p>Our <code>CatsService</code> is a basic class with one property and two methods. The only
+           new feature
+           is
+           that it uses the <code>@Injectable()</code> decorator. The <code>@Injectable()</code>
+           decorator attaches metadata,
+           which declares that <code>CatsService</code> is a class that can be managed by the Nest
+           IoC container.
+           By
+           the way, this example also uses a <code>Cat</code> interface, which probably looks
+           something like
+           this:</p>
+
+        <span class="filename">interface/cat.interface.ts <span>TS</span></span>
+        <pre class="typescript">
+
+<code class="typescript"><span class="keyword">export</span> <span class="keyword">interface</span> <span
+        class="class-name">Cat</span> <span class="punctuation">{</span>
+  name<span class="operator">:</span> <span class="builtin">string</span><span
+        class="punctuation">;</span>
+  age<span class="operator">:</span> <span class="builtin">number</span><span
+        class="punctuation">;</span>
+  breed<span class="operator">:</span> <span class="builtin">string</span><span
+        class="punctuation">;</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+        <p>Now that we have a service class to retrieve cats, let's use it inside the
+          <code>CatsController</code>:</p>
+
+        <span class="filename">interface/cat.interface.ts <span>TS</span></span>
+        <pre class="typescript">
+<code class="typescript">
+<span class="keyword">import</span> <span class="punctuation">{</span> Controller<span
+        class="punctuation">,</span> Get<span class="punctuation">,</span> Post<span
+        class="punctuation">,</span> Body <span class="punctuation">}</span> <span
+        class="keyword">from</span> <span class="string">'@nestjs/common'</span><span
+        class="punctuation">;</span>
+<span class="keyword">import</span> <span
+        class="punctuation">{</span> CreateCatDto <span
+        class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'./dto/create-cat.dto'</span><span class="punctuation">;</span>
+<span class="keyword">import</span> <span class="punctuation">{</span> CatsService <span
+        class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'./cats.service'</span><span class="punctuation">;</span>
+<span class="keyword">import</span> <span class="punctuation">{</span> Cat <span
+        class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'./interfaces/cat.interface'</span><span
+        class="punctuation">;</span>
+
+<span class="decorator"><span class="at operator">@</span><span
+        class="function">Controller</span></span><span
+        class="punctuation">(</span><span class="string">'cats'</span><span
+        class="punctuation">)</span>
+<span class="keyword">export</span> <span class="keyword">class</span> <span
+        class="class-name">CatsController</span> <span class="punctuation">{</span>
+  <span class="function">constructor</span><span class="punctuation">(</span><span
+        class="keyword">private</span> catsService<span class="operator">:</span> CatsService<span
+        class="punctuation">)</span> <span class="punctuation">{</span><span
+        class="punctuation">}</span>
+
+  <span class="decorator"><span class="at operator">@</span><span
+          class="function">Post</span></span><span class="punctuation">(</span><span
+        class="punctuation">)</span>
+  <span class="keyword">async</span> <span class="function">create</span><span
+        class="punctuation">(</span><span class="decorator"><span
+        class="at operator">@</span><span class="function">Body</span></span><span
+        class="punctuation">(</span><span class="punctuation">)</span> createCatDto<span
+        class="operator">:</span> CreateCatDto<span class="punctuation">)</span> <span
+        class="punctuation">{</span>
+    <span class="keyword">this</span><span class="punctuation">.</span>catsService<span
+        class="punctuation">.</span><span class="function">create</span><span
+        class="punctuation">(</span>createCatDto<span class="punctuation">)</span><span
+        class="punctuation">;</span>
+  <span class="punctuation">}</span>
+
+  <span class="decorator"><span class="at operator">@</span><span
+          class="function">Get</span></span><span class="punctuation">(</span><span
+        class="punctuation">)</span>
+  <span class="keyword">async</span> <span class="function">findAll</span><span
+        class="punctuation">(</span><span class="punctuation">)</span><span
+        class="operator">:</span> <span class="builtin">Promise</span><span
+        class="operator">&lt;</span>Cat<span class="punctuation">[</span><span
+        class="punctuation">]</span><span class="operator">&gt;</span> <span
+        class="punctuation">{</span>
+    <span class="keyword">return</span> <span class="keyword">this</span><span
+        class="punctuation">.</span>catsService<span class="punctuation">.</span><span
+        class="function">findAll</span><span class="punctuation">(</span><span
+        class="punctuation">)</span><span class="punctuation">;</span>
+  <span class="punctuation">}</span>
+<span class="punctuation">}</span>
+</code></pre>
+
+        <p>
+          The <code>CatsService</code> is <strong>injected</strong> through the class constructor.
+          Notice the use of the <code>private</code>
+          syntax. This shorthand allows us to both declare and initialize the
+          <code>catsService</code> member
+          immediately in the same location.
+
+        </p>
+      </li>
+    </ol>
+
+  </section>
+
+  <section class="main-section" id="Modules">
+    <header>
+      Modules
+    </header>
+  </section>
+</main>
 </body>
 </html>
