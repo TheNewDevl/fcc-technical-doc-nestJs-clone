@@ -384,7 +384,198 @@ $ nest new project-name</code></pre>
     <header>
       Modules
     </header>
+
+    <p>
+      module is a class annotated with a <code>@Module()</code> decorator. The
+      <code>@Module()</code> decorator provides
+      metadata that Nest makes use of to organize the application structure.
+    </p>
+
+    <div class="img-container">
+      <img alt="Modules illustration" src="https://docs.nestjs.com/assets/Modules_1.png">
+    </div>
+
+    <p>Each application has at least one module, a <strong>root module</strong>. The root module is
+       the starting
+       point Nest uses to build the <strong>application graph</strong>- the internal data structure
+       Nest uses to
+       resolve module and provider relationships and dependencies. While very small applications may
+       theoretically have just the root module, this is not the typical case. We want to emphasize
+       that modules are <strong>strongly</strong> recommended as an effective way to organize your
+       components. Thus,
+       for most applications, the resulting architecture will employ multiple modules, each
+       encapsulating a closely related set of <strong>capabilities</strong>.</p>
+
+    <p>The <code>@Module()</code> decorator takes a single object whose properties describe the
+       module:</p>
+
+    <table>
+      <thead></thead>
+      <tbody>
+      <tr>
+        <td><code>providers</code></td>
+        <td>the providers that will be instantiated by the Nest injector and that may be shared at
+            least across this module
+        </td>
+      </tr>
+      <tr>
+        <td><code>controllers</code></td>
+        <td>the set of controllers defined in this module which have to be instantiated
+        </td>
+      </tr>
+      <tr>
+        <td><code>imports</code></td>
+        <td>the list of imported modules that export the providers which are required in this module
+        </td>
+      </tr>
+      <tr>
+        <td><code>exports</code></td>
+        <td>the subset of <code>providers</code> that are provided by this module and should be
+            available in
+            other modules which import this module. You can use either the provider itself or just
+            its token (<code>provide</code> value)
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <p>The module
+      <strong>encapsulates</strong>
+       providers by default. This means that it's impossible to inject
+       providers that are neither directly part of the current module nor exported from the imported
+       modules. Thus, you may consider the exported providers from a module as the module's public
+       interface, or API.
+    </p>
+
+    <ol>
+      <li>
+        <header>
+          Feature modules
+        </header>
+
+        <p>The <code>CatsController</code> and <code>CatsService</code> belong to the same
+           application domain. As they are
+           closely related, it makes sense to move them into a feature module. A feature module
+           simply organizes code relevant for a specific feature, keeping code organized and
+           establishing clear boundaries. This helps us manage complexity and develop with <a
+                  class="external-link" href="https://en.wikipedia.org/wiki/SOLID" rel="nofollow"
+                  target="_blank">SOLID</a>
+           principles, especially as the size of the application and/or team grow.</p>
+
+        <p>To demonstrate this, we'll create the <code>CatsModule</code>.</p>
+
+        <span class="filename">cats/cats.module.ts <span>TS</span></span>
+        <pre class="typescript">
+<code class="typescript">
+<span class="keyword">import</span> <span class="punctuation">{</span> Module <span
+        class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'@nestjs/common'</span><span class="punctuation">;</span>
+<span class="keyword">import</span> <span
+        class="punctuation">{</span> CatsController <span
+        class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'./cats.controller'</span><span class="punctuation">;</span>
+<span class="keyword">import</span> <span class="punctuation">{</span> CatsService <span
+        class="punctuation">}</span> <span class="keyword">from</span> <span
+        class="string">'./cats.service'</span><span class="punctuation">;</span>
+
+<span class="decorator"><span class="at operator">@</span><span
+        class="function">Module</span></span><span
+        class="punctuation">(</span><span class="punctuation">{</span>
+  controllers<span class="operator">:</span> <span class="punctuation">[</span>CatsController<span
+        class="punctuation">]</span><span class="punctuation">,</span>
+  providers<span class="operator">:</span> <span class="punctuation">[</span>CatsService<span
+        class="punctuation">]</span><span class="punctuation">,</span>
+<span class="punctuation">}</span><span class="punctuation">)</span>
+<span class="keyword">export</span> <span class="keyword">class</span> <span
+        class="class-name">CatsModule</span> <span class="punctuation">{</span><span
+        class="punctuation">}</span>
+</code></pre>
+
+        <blockquote class="hint">
+          <h3>HINT</h3>
+          <p>To create a module using the CLI, simply execute the <code>$ nest g module cats</code>
+             command.</p>
+        </blockquote>
+
+        <p>Above, we defined the <code>CatsModule</code> in the <code>cats.module.ts</code> file,
+           and moved everything related
+           to this module into the <code>cats</code> directory. The last thing we need to do is
+           import this
+           module into the root module (the <code>AppModule</code>, defined in the <code>app.module.ts</code>
+           file).</p>
+
+        <span class="filename">app.module.ts <span>TS</span></span>
+        <pre class="typescript">
+<code class="typescript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Module <span
+        class="token punctuation">}</span> <span class="token keyword">from</span> <span
+        class="token string">'@nestjs/common'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> CatsModule <span
+        class="token punctuation">}</span> <span class="token keyword">from</span> <span
+        class="token string">'./cats/cats.module'</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span
+        class="token punctuation">(</span><span class="token punctuation">{</span>
+  imports<span class="token operator">:</span> <span
+        class="token punctuation">[</span>CatsModule<span class="token punctuation">]</span><span
+        class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span
+        class="token class-name">AppModule</span> <span class="token punctuation">{</span><span
+        class="token punctuation">}</span>
+</code></pre>
+
+        <p>Here is how our directory structure looks now:</p>
+
+        <div class="files-structure">
+          <div class="parent">src</div>
+          <div class="children">
+            <div class="parent">cats</div>
+            <div class="children">
+              <div class="parent">dto</div>
+              <div class="children">
+                <div class="parent">create-cat.dto.ts</div>
+              </div>
+              <div class="parent">interfaces</div>
+              <div class="children">
+                <div class="parent">cat.interface.ts</div>
+              </div>
+              <div class="parent">cats.controller.ts</div>
+              <div class="parent">cats.module.ts</div>
+              <div class="parent">cats.service.ts</div>
+
+            </div>
+            <div class="parent">app.module.ts</div>
+            <div class="parent">main.ts</div>
+          </div>
+        </div>
+      </li>
+    </ol>
   </section>
 </main>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
