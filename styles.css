@@ -438,3 +438,19 @@ nav {
 nav {
     transition: margin 300ms ease-in-out;
 }
+
+/*author*/
+
+.author {
+    background: #fff;
+    font-size: 12px;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.author a {
+    font-size: 12px;
+    text-decoration: underline;
+}
